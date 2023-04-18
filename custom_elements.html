@@ -1,0 +1,69 @@
+<my-clock>
+
+
+  <template shadowrootmode="open">
+    <!-- This is the SSR content -->
+
+    <div>
+      <span id="hour">12</span> : <span id="min">34</span> :
+      <span id="sec">56</span>
+    </div>
+
+
+    <style id="style">
+      span {
+        font-size: 40px;
+      }
+    </style>
+
+  </template>
+
+
+</my-clock>
+
+
+
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", () => {
+    customElements.define(
+      "my-clock",
+      class extends HTMLElement {
+        #internals = null;
+        constructor() {
+          super();
+          this.#internals = this.attachInternals();
+          const shadow = this.#internals.shadowRoot;
+          this.hours = shadow.querySelector("#hour");
+          this.minutes = shadow.querySelector("#min");
+          this.seconds = shadow.querySelector("#sec");
+          this.style = shadow.querySelector("style");
+          
+          this.style_display = document.getElementById("style");
+          
+        }
+
+        connectedCallback() {
+
+          this.update();
+          this.interval = setInterval(() => this.update(), 1000);
+        }
+
+        disconnectedCallback() {
+          clearInterval(this.interval);
+        }
+
+        update() {
+          const pad = (v) => {
+            return String(v).padStart(2, "0");
+          };
+          const d = new Date();
+          this.hours.textContent = pad(d.getHours());
+          this.minutes.textContent = pad(d.getMinutes());
+          this.seconds.textContent = pad(d.getSeconds());
+
+      }
+    }
+    );
+  });
+</script>
