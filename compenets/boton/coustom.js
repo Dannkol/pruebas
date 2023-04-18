@@ -12,25 +12,23 @@ export default {
             constructor() {
                 super();
                 let currentStatus = this.getAttribute('status');
-                if (currentStatus) {
-                    this.status = currentStatus;
-                    this.attributeChangedCallback();
-                } else {
-                    this.status = 'neutral';
-                }
+                let currenthola = this.getAttribute('hola');
+                console.log(currenthola)
                 let shadowRoot = this.attachShadow({ mode: 'open' });
                 shadowRoot.innerHTML = element;
             }
             //metodos necesario 
             static get observedAttributes() {
-                return ['status'];
+                return ['status', 'hola'];
             }
 
             attributeChangedCallback() {
-                this.shadowRoot !== null ? 
-                    this.shadowRoot.querySelector('div').setAttribute('class' , this.status)
-                    : null;
-
+                console.log(BotonStatus.observedAttributes)
+                this.shadowRoot.querySelector('div').setAttribute('class' , this.getAttribute(BotonStatus.observedAttributes[0]))
+              
+              
+                
+                
             }
 
 
